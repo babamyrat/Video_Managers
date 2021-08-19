@@ -3,20 +3,19 @@ package com.example.video_manager;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
-private WebView webView;
-
-    Activity activity ;
-    private ProgressDialog progDailog;
+     WebView myWebView;
+    WebSettings webSettings;
+    String mUrl = "https://videomanager-test.garpix.com/";
+    String url = "https://lk.connect.garpix.com/login";
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
@@ -24,30 +23,30 @@ private WebView webView;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        activity = this;
-        progDailog = ProgressDialog.show(activity, "Loading","Please wait...", true);
-        progDailog.setCancelable(false);
-        webView = (WebView) findViewById(R.id.webView);
+        Uri uri = getIntent().getData();
+        if (uri != null) {
+            String path = uri.toString();
+            Toast.makeText(MainActivity.this, "Path =: " + path, Toast.LENGTH_SHORT).show();
+        }
 
-        webView.getSettings().setJavaScriptEnabled(true);
-        webView.getSettings().setLoadWithOverviewMode(true);
-        webView.getSettings().setUseWideViewPort(true);
-        webView.setWebViewClient(new WebViewClient(){
+        myWebView = findViewById(R.id.webView);
+        myWebView.loadUrl(mUrl);
+        webSettings = myWebView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        myWebView.setWebViewClient(new MyWebViewClient());
+    }
 
+    private class MyWebViewClient extends WebViewClient{
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
 
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                progDailog.show();
-                view.loadUrl(url);
+         return false;
+        }
 
-                return true;
-            }
-            @Override
-            public void onPageFinished(WebView view, final String url) {
-                progDailog.dismiss();
-            }
-        });
-        webView.loadUrl("https://videomanager-test.garpix.com/");
+        @Override
+        public void onScaleChanged(WebView view, float oldScale, float newScale) {
+            super.onScaleChanged(view, oldScale, newScale);
+        }
     }
 
 }
