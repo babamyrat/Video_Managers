@@ -15,7 +15,6 @@ public class MainActivity extends AppCompatActivity {
      WebView myWebView;
     WebSettings webSettings;
     String mUrl = "https://videomanager-test.garpix.com/";
-    String url = "https://lk.connect.garpix.com/login";
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
@@ -23,16 +22,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Uri uri = getIntent().getData();
-        if (uri != null) {
-            String path = uri.toString();
-            Toast.makeText(MainActivity.this, "Path =: " + path, Toast.LENGTH_SHORT).show();
-        }
+//        Uri uri = getIntent().getData();
+//        if (uri != null) {
+//            String path = uri.toString();
+//            Toast.makeText(MainActivity.this, "Path =: " + path, Toast.LENGTH_SHORT).show();
+//        }
 
         myWebView = findViewById(R.id.webView);
         myWebView.loadUrl(mUrl);
         webSettings = myWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
+        webSettings.setDomStorageEnabled(true);
         myWebView.setWebViewClient(new MyWebViewClient());
     }
 
@@ -43,10 +43,6 @@ public class MainActivity extends AppCompatActivity {
          return false;
         }
 
-        @Override
-        public void onScaleChanged(WebView view, float oldScale, float newScale) {
-            super.onScaleChanged(view, oldScale, newScale);
-        }
     }
 
 }
